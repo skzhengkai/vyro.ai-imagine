@@ -6,7 +6,7 @@
 2. then, scroll down to `get-your-token` to obtain your vyro.ai token
 
 3. after that, it's really really really easy to use. you can reference the function with the following:
-   ```js
+```js
 const { generateImage } = require('./vyroai/imagine.js');
 ```
 and generate an image with 
