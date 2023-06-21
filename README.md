@@ -1,5 +1,17 @@
 # vyro.ai-imagine
 
+### how-to-use:
+first, scroll down to `get-your-token` to obtain your vyro.ai token
+
+after that, it's really really really easy to use. you can reference the function with the following:
+```js
+const { generateImage } = require('./vyroai/imagine.js');
+```
+and generate an image with 
+```js
+await generateImage("beautiful girl", "16:9", "ANIME_V2");
+```
+
 ### get-your-token:
 you'll need your **vyro.ai** token to use this. don't worry, afaik there are no limits on your token. 
 
@@ -24,16 +36,6 @@ if (token) {
 }
 ```
 3. rename `.env.example` to `.env`, and set the value to whatever was copied to your clipboard.
-
-### how-to-use:
-it's really really really easy to use. you can reference the function with the following:
-```js
-const { generateImage } = require('./vyroai/imagine.js');
-```
-and generate an image with 
-```js
-await generateImage("beautiful girl", "16:9", "ANIME_V2");
-```
 
 ### todo: 
 - add interrogator (img2text)
