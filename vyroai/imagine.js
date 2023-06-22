@@ -13,7 +13,7 @@ async function generateImage(prompt, ratio, style) {
   const headers = {
     'accept': 'application/json, text/plain, */*',
     'accept-language': 'en-US,en;q=0.9',
-    'bearer': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4NjY5YjQwMi0zNmFiLTQ2NmUtOWQ4Ny01NTJjMTE2ZmIxYjQiLCJpYXQiOjE2ODc0NTkyOTgsImV4cCI6MTY4NzU0NTY5OH0.Hk1NhgLZyaR5QXUeOyuhBFslbWGNGUAPx2zBGH30pLk',
+    'bearer': process.env['BEARER'],
     'content-type': 'multipart/form-data; boundary=----WebKitFormBoundarygRMpGDqJx5Ok22c8',
     'prefer': 'safe',
     'premium': 'True',
