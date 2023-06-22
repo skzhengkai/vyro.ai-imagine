@@ -2,7 +2,7 @@ const axios = require('axios');
 const FormData = require('form-data');
 const fs = require('fs');
 
-const Style = require('./constants');
+const { Style, Control } = require('./constants');
 
 async function generateImage(prompt, ratio, style) {
   const selectedStyle = Style[style] || Style.V4_CREATIVE;
@@ -99,8 +99,45 @@ async function interrogator(imageData) {
   }
 }
 
+function validate_cfg(cfg) {
+  if (cfg < 0.0 || cfg > 16.0) {
+    throw new Error(`Invalid CFG, must be in range (0; 16): ${cfg}`);
+  }
+  return String(cfg);
+}
+
+async function controlnet(imageData, prompt, negative = null, cfg = 9.5, control = Control.SCRIBBLE, style = Style.IMAGINE_V1, seed = null) {
+  try {
+    const api = 'https://inferenceengine.vyro.ai';
+    const version = '1';
+
+    const formData = new FormData();
+    formData.append('model_version', version);
+    formData.append('prompt', prompt + (style[3] || ''));
+    formData.append('negative_prompt', negative || '');
+    formData.append('strength', '0');
+    formData.append('cfg', validate_cfg(cfg));
+    formData.append('control', control);
+    formData.append('style_id', String(style[0]));
+    formData.append('seed', seed || '');
+    formData.append('image', imageData, { filename: 'image.png' });
+
+    const response = await axios.post(`${api}/controlnet`, formData, {
+      headers: formData.getHeaders(),
+      responseType: 'arraybuffer',
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('An error occurred while performing image remix:', error);
+    return null;
+  }
+}
+
+
 module.exports = {
   generateImage,
   upscale,
-  interrogator
+  interrogator,
+  controlnet
 };

@@ -42,8 +42,8 @@ if (token) {
 
 ### todo: 
 - remove the need to use bearer at all
-- add remix (img & text 2 img)
 - add variate (img2img)
+- ~~add remix a.k.a. controlnet (img & text 2 img)~~
 - ~~make image generation return image data instead of directly downloading~~
 - ~~add interrogator (img2text)~~
 - ~~add upscale (img2img)~~

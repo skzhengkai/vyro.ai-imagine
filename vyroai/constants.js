@@ -87,3 +87,14 @@ const Style = {
   SKETCH: [27, "thumb-59", "styles_v4", ", pencil, hand drawn, sketch, on paper"],
   COMIC_BOOK: [28, "thumb-48", "styles_v4", ", Comic cover, 1960s Marvel comic, comic book illustrations"]
 }
+
+const Control = {
+  SCRIBBLE: "scribble",
+  POSE: "openpose",
+  DEPTH: "depth"
+};
+
+module.exports = {
+  Style,
+  Control,
+};
