@@ -40,9 +40,10 @@ if (token) {
 3. rename `.env.example` to `.env`, and set the value to whatever was copied to your clipboard.
 
 ### todo: 
+- make image generation return image data instead of directly downloading
 - add interrogator (img2text)
 - add variate (img2img)
-- add upscale (img2img)
+- ~~add upscale (img2img)~~
 - add remix (img & text 2 img)
 
 ## Credit
