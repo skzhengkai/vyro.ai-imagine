@@ -13,6 +13,7 @@ and generate an image with
 ```js
 await generateImage("beautiful girl", "16:9", "ANIME_V2");
 ```
+there are additional examples in the ./examples folder (upscale, interrogator, etc.)
 
 ### get-your-token:
 you'll need your **vyro.ai** token to use this. don't worry, afaik there are no limits on your token. 
@@ -40,12 +41,12 @@ if (token) {
 3. rename `.env.example` to `.env`, and set the value to whatever was copied to your clipboard.
 
 ### todo: 
-- remove the need to use bearer
-- ~~make image generation return image data instead of directly downloading~~
-- add interrogator (img2text)
-- add variate (img2img)
-- ~~add upscale (img2img)~~
+- remove the need to use bearer at all
 - add remix (img & text 2 img)
+- add variate (img2img)
+- ~~make image generation return image data instead of directly downloading~~
+- ~~add interrogator (img2text)~~
+- ~~add upscale (img2img)~~
 
 ## Credit
 - vyro.ai for the api (duh)
