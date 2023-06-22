@@ -4,39 +4,59 @@ const fs = require('fs');
 
 const Style = require('./constants');
 
-async function generateImage(prompt, aspect_ratio, style) {
+async function generateImage(prompt, ratio, style) {
+  const selectedStyle = Style[style] || Style.V4_CREATIVE;
+
+  const styleId = selectedStyle[0];
   const url = 'https://api.vyro.ai/v1/imagine/web/generations';
+
   const headers = {
-    'bearer': process.env['BEARER'],
-    'style-id': Style[style][0] || '30'
+    'accept': 'application/json, text/plain, */*',
+    'accept-language': 'en-US,en;q=0.9',
+    'bearer': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4NjY5YjQwMi0zNmFiLTQ2NmUtOWQ4Ny01NTJjMTE2ZmIxYjQiLCJpYXQiOjE2ODc0NTkyOTgsImV4cCI6MTY4NzU0NTY5OH0.Hk1NhgLZyaR5QXUeOyuhBFslbWGNGUAPx2zBGH30pLk',
+    'content-type': 'multipart/form-data; boundary=----WebKitFormBoundarygRMpGDqJx5Ok22c8',
+    'prefer': 'safe',
+    'premium': 'True',
+    'sec-ch-ua': '"Not.A/Brand";v="8", "Chromium";v="114", "Microsoft Edge";v="114"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"Windows"',
+    'sec-fetch-dest': 'empty',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-site': 'cross-site',
+    'style-id': styleId.toString()
   };
 
-  const data = new FormData();
-  data.append('prompt', prompt);
-  data.append('aspect_ratio', aspect_ratio || '9:16');
-  data.append('upscale', '1');
+  const referrer = 'https://www.imagine.art/';
+  const referrerPolicy = 'strict-origin-when-cross-origin';
 
-  // Handle the style parameters
-  const styleData = Style[style];
-  if (styleData) {
-    const [styleId, asset, assetPath, suffix] = styleData;
-    data.append('style_id', styleId);
-    if (suffix) {
-      prompt += suffix;
-    }
-  }
-
-  console.log(`prompt: ${prompt}`);
+  const formData = new FormData();
+  formData.append('model_version', '1');
+  formData.append('num_images', '1');
+  formData.append('cfg', '7.5');
+  formData.append('steps', '30');
+  formData.append('aspect_ratio', ratio);
+  formData.append('prompt', prompt + (selectedStyle[3] || ''));
+  formData.append('negative_prompt', '');
+  formData.append('style_id', styleId.toString());
 
   try {
-    const response = await axios.post(url, data, { headers, responseType: 'arraybuffer' });
+    const response = await axios.post(url, formData, {
+      headers: {
+        ...headers,
+        ...formData.getHeaders()
+      },
+      referrer,
+      referrerPolicy,
+      responseType: 'arraybuffer',
+      responseEncoding: 'binary'
+    });
+
     return response.data;
   } catch (error) {
-    console.error(error);
-    return null;
+    console.error('Error downloading the image:', error);
+    return;
   }
 }
-
 
 async function upscale(imageData) {
   try {
@@ -54,12 +74,33 @@ async function upscale(imageData) {
 
     return response.data;
   } catch (error) {
-    console.error('An error occurred:', error);
+    console.error('An error occurred upscaling the image:', error);
+    return null;
+  }
+}
+
+async function interrogator(imageData) {
+  try {
+    const api = 'https://inferenceengine.vyro.ai';
+    const version = '1';
+
+    const formData = new FormData();
+    formData.append('model_version', version);
+    formData.append('image', imageData, { filename: 'prompt_generator_temp.png' });
+
+    const response = await axios.post(`${api}/interrogator`, formData, {
+      headers: formData.getHeaders(),
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('An error occurred while generating the prompt:', error);
     return null;
   }
 }
 
 module.exports = {
   generateImage,
-  upscale
+  upscale,
+  interrogator
 };
