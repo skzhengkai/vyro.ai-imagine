@@ -1,4 +1,5 @@
 const { interrogator } = require('../vyroai/imagine.js');
+const fs = require('fs');
 
 async function main() {
     try {
