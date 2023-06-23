@@ -1,4 +1,4 @@
-const { generateImage } = require('../vyroai/imagine.js');
+const { interrogator } = require('../vyroai/imagine.js');
 
 async function main() {
     try {
