@@ -40,6 +40,8 @@ if (token) {
 ```
 3. rename `.env.example` to `.env`, and set the value to whatever was copied to your clipboard.
 
+it's worth noting that bearer's expire 24h after creation. i will be trying to remove the need to input a bearer at all in the near future.
+
 ### todo: 
 - remove the need to use bearer at all
 - add variate (img2img)
